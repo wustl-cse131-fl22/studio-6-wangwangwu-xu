@@ -1,5 +1,7 @@
 package studio6;
 
+import java.awt.Color;
+
 import edu.princeton.cs.introcs.StdDraw;
 
 public class RecursiveMethods {
@@ -14,7 +16,15 @@ public class RecursiveMethods {
 	public static double geometricSum(int n) {
 		
 			// FIXME compute the geometric sum for the first n terms recursively
-			return 0;
+			if(n==0)
+			{
+				return 0;
+			}
+			else
+			{
+				return Math.pow(0.5,n) + geometricSum(n-1);
+			}
+		
 		
 	}
 
@@ -27,10 +37,16 @@ public class RecursiveMethods {
 	 * @return greatest common divisor of p and q
 	 */
 	public static int gcd(int p, int q) {
+			
+			if (Math.max(p, q)%Math.min(p, q) == 0) {
+				return Math.min(p, q);
+			}
+			return gcd(Math.min(p, q),Math.max(p, q)%Math.min(p, q));
 		
-			// FIXME compute the gcd of p and q using recursion
-			return 0;
-		
+//			if (p % q ==0) {
+//				return q;
+//			} 
+//			return gcd(q, p%q);
 	}
 
 	
@@ -42,12 +58,24 @@ public class RecursiveMethods {
 	 * @return an array with the same data as the input but it reverse order
 	 */
 	public static int[] toReversed(int[] array) {
+		int len = array.length;
+		int[] reverse = new int[len];
+//		len /=2;
+		len -=1;
+		reverse = reverseArray(array, reverse, len);
 		
-			// FIXME create a helper method that can recursively reverse the given array
-			return new int[0];
-		
+		return reverse;
 	}
-
+	
+	public static int[] reverseArray(int[] array, int[] reverse, int len) {
+		if (len < 0 || array.length == 0) {
+			return reverse;
+		} else {
+			reverse[len] = array[array.length-len-1];
+			//reverse[array.length-len-1] = array[len];
+			return reverseArray(array, reverse, len-1);
+		}
+	}
 	/**
 	 * @param xCenter                       x-coordinate of the center of the circle
 	 *                                      at the current depth
@@ -60,7 +88,18 @@ public class RecursiveMethods {
 	public static void circlesUponCircles(double xCenter, double yCenter, double radius,
 			double radiusMinimumDrawingThreshold) {
 		
-		// FIXME
+		if (radius >= radiusMinimumDrawingThreshold) {
+			StdDraw.setPenColor(Color.black);
+			StdDraw.circle(xCenter, yCenter, radius);
+			circlesUponCircles(xCenter+radius, yCenter, radius/3,
+					radiusMinimumDrawingThreshold) ;
+			circlesUponCircles(xCenter-radius, yCenter, radius/3,
+					radiusMinimumDrawingThreshold) ;
+			circlesUponCircles(xCenter, yCenter+radius, radius/3,
+					radiusMinimumDrawingThreshold) ;
+			circlesUponCircles(xCenter, yCenter-radius, radius/3,
+					radiusMinimumDrawingThreshold) ;
+		}
 	}
 
 }
